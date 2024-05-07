@@ -1,0 +1,3 @@
+[submodule "RustyXML"]
+	path = RustyXML
+	url = https://github.com/planetoryd/serde-stream-xml

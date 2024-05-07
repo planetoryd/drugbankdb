@@ -1,0 +1,10 @@
+[package]
+name = "drugbankdb"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+RustyXML = { path = "./RustyXML" }
+anyhow = "1.0.83"
+serde_json = "1.0.116"
+surrealdb = "1.4.2"

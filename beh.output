@@ -1,0 +1,320 @@
+[src/main.rs:24:13] &el = Element {
+    name: "stream",
+    ns: Some(
+        "http://etherx.jabber.org/stream",
+    ),
+    attributes: {
+        (
+            "to",
+            None,
+        ): "example.com",
+        (
+            "version",
+            None,
+        ): "1.0",
+        (
+            "xmlns",
+            None,
+        ): "jabber:client",
+        (
+            "stream",
+            Some(
+                "http://www.w3.org/2000/xmlns/",
+            ),
+        ): "http://etherx.jabber.org/stream",
+    },
+    children: [
+        CharacterNode(
+            "\n\t",
+        ),
+        ElementNode(
+            Element {
+                name: "message",
+                ns: Some(
+                    "jabber:client",
+                ),
+                attributes: {
+                    (
+                        "to",
+                        None,
+                    ): "juliet@capulet.lit",
+                },
+                children: [
+                    CharacterNode(
+                        "\n\t\t",
+                    ),
+                    ElementNode(
+                        Element {
+                            name: "request",
+                            ns: Some(
+                                "urn:xmpp:receipts",
+                            ),
+                            attributes: {
+                                (
+                                    "xmlns",
+                                    None,
+                                ): "urn:xmpp:receipts",
+                            },
+                            children: [],
+                            prefixes: {
+                                "http://www.w3.org/2000/xmlns/": "xmlns",
+                                "http://www.w3.org/XML/1998/namespace": "xml",
+                            },
+                            default_ns: Some(
+                                "urn:xmpp:receipts",
+                            ),
+                        },
+                    ),
+                    CharacterNode(
+                        "\n\t\t",
+                    ),
+                    ElementNode(
+                        Element {
+                            name: "body",
+                            ns: Some(
+                                "jabber:client",
+                            ),
+                            attributes: {},
+                            children: [
+                                CharacterNode(
+                                    "Hello",
+                                ),
+                            ],
+                            prefixes: {
+                                "http://www.w3.org/2000/xmlns/": "xmlns",
+                                "http://www.w3.org/XML/1998/namespace": "xml",
+                            },
+                            default_ns: Some(
+                                "jabber:client",
+                            ),
+                        },
+                    ),
+                    CharacterNode(
+                        "\n\t",
+                    ),
+                ],
+                prefixes: {
+                    "http://www.w3.org/2000/xmlns/": "xmlns",
+                    "http://www.w3.org/XML/1998/namespace": "xml",
+                },
+                default_ns: Some(
+                    "jabber:client",
+                ),
+            },
+        ),
+        CharacterNode(
+            "\n\t",
+        ),
+        ElementNode(
+            Element {
+                name: "iq",
+                ns: Some(
+                    "jabber:client",
+                ),
+                attributes: {
+                    (
+                        "to",
+                        None,
+                    ): "bar@example.net",
+                },
+                children: [
+                    CharacterNode(
+                        "\n\t\t",
+                    ),
+                    ElementNode(
+                        Element {
+                            name: "ping",
+                            ns: Some(
+                                "urn:xmpp:ping",
+                            ),
+                            attributes: {
+                                (
+                                    "xmlns",
+                                    None,
+                                ): "urn:xmpp:ping",
+                            },
+                            children: [],
+                            prefixes: {
+                                "http://www.w3.org/2000/xmlns/": "xmlns",
+                                "http://www.w3.org/XML/1998/namespace": "xml",
+                            },
+                            default_ns: Some(
+                                "urn:xmpp:ping",
+                            ),
+                        },
+                    ),
+                    CharacterNode(
+                        "\n\t",
+                    ),
+                ],
+                prefixes: {
+                    "http://www.w3.org/2000/xmlns/": "xmlns",
+                    "http://www.w3.org/XML/1998/namespace": "xml",
+                },
+                default_ns: Some(
+                    "jabber:client",
+                ),
+            },
+        ),
+        CharacterNode(
+            "\n\t",
+        ),
+        ElementNode(
+            Element {
+                name: "error",
+                ns: Some(
+                    "http://etherx.jabber.org/stream",
+                ),
+                attributes: {},
+                children: [
+                    CharacterNode(
+                        "\n\t\t",
+                    ),
+                    ElementNode(
+                        Element {
+                            name: "conflict",
+                            ns: Some(
+                                "urn:ietf:params:xml:ns:xmpp-streams",
+                            ),
+                            attributes: {
+                                (
+                                    "xmlns",
+                                    None,
+                                ): "urn:ietf:params:xml:ns:xmpp-streams",
+                            },
+                            children: [],
+                            prefixes: {
+                                "http://www.w3.org/2000/xmlns/": "xmlns",
+                                "http://www.w3.org/XML/1998/namespace": "xml",
+                            },
+                            default_ns: Some(
+                                "urn:ietf:params:xml:ns:xmpp-streams",
+                            ),
+                        },
+                    ),
+                    CharacterNode(
+                        "\n\t\t",
+                    ),
+                    ElementNode(
+                        Element {
+                            name: "text",
+                            ns: Some(
+                                "urn:ietf:params:xml:ns:xmpp-streams",
+                            ),
+                            attributes: {
+                                (
+                                    "xmlns",
+                                    None,
+                                ): "urn:ietf:params:xml:ns:xmpp-streams",
+                                (
+                                    "lang",
+                                    Some(
+                                        "http://www.w3.org/XML/1998/namespace",
+                                    ),
+                                ): "en",
+                            },
+                            children: [
+                                CharacterNode(
+                                    "\n\t\t\tAnother entity with the same resource appeared\n\t\t",
+                                ),
+                            ],
+                            prefixes: {
+                                "http://www.w3.org/2000/xmlns/": "xmlns",
+                                "http://www.w3.org/XML/1998/namespace": "xml",
+                            },
+                            default_ns: Some(
+                                "urn:ietf:params:xml:ns:xmpp-streams",
+                            ),
+                        },
+                    ),
+                    CharacterNode(
+                        "\n\t",
+                    ),
+                ],
+                prefixes: {
+                    "http://www.w3.org/2000/xmlns/": "xmlns",
+                    "http://www.w3.org/XML/1998/namespace": "xml",
+                },
+                default_ns: Some(
+                    "jabber:client",
+                ),
+            },
+        ),
+        CharacterNode(
+            "\n",
+        ),
+    ],
+    prefixes: {
+        "http://www.w3.org/2000/xmlns/": "xmlns",
+        "http://etherx.jabber.org/stream": "stream",
+        "http://www.w3.org/XML/1998/namespace": "xml",
+    },
+    default_ns: Some(
+        "jabber:client",
+    ),
+}
+[src/main.rs:24:13] &el = Element {
+    name: "bbbb",
+    ns: None,
+    attributes: {},
+    children: [
+        CharacterNode(
+            "\n\t",
+        ),
+        ElementNode(
+            Element {
+                name: "iq",
+                ns: None,
+                attributes: {
+                    (
+                        "to",
+                        None,
+                    ): "bar@example.net",
+                },
+                children: [
+                    CharacterNode(
+                        "\n\t\t",
+                    ),
+                    ElementNode(
+                        Element {
+                            name: "ping",
+                            ns: Some(
+                                "urn:xmpp:ping",
+                            ),
+                            attributes: {
+                                (
+                                    "xmlns",
+                                    None,
+                                ): "urn:xmpp:ping",
+                            },
+                            children: [],
+                            prefixes: {
+                                "http://www.w3.org/2000/xmlns/": "xmlns",
+                                "http://www.w3.org/XML/1998/namespace": "xml",
+                            },
+                            default_ns: Some(
+                                "urn:xmpp:ping",
+                            ),
+                        },
+                    ),
+                    CharacterNode(
+                        "\n\t",
+                    ),
+                ],
+                prefixes: {
+                    "http://www.w3.org/2000/xmlns/": "xmlns",
+                    "http://www.w3.org/XML/1998/namespace": "xml",
+                },
+                default_ns: None,
+            },
+        ),
+        CharacterNode(
+            "\n\tbbx\n",
+        ),
+    ],
+    prefixes: {
+        "http://www.w3.org/2000/xmlns/": "xmlns",
+        "http://www.w3.org/XML/1998/namespace": "xml",
+    },
+    default_ns: None,
+}
