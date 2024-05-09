@@ -5,13 +5,15 @@ use serde::Deserialize;
 use std::collections::VecDeque;
 use std::fs::{File, OpenOptions};
 use std::io::{BufRead, BufReader, Read, Seek, SeekFrom, Write};
-use std::os::unix::fs::FileExt;
+use std::os::unix::fs::{FileExt, MetadataExt};
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering::SeqCst;
 use surrealdb::engine::remote;
 use surrealdb::{self, Surreal};
 use tokio::signal;
 use xml::{self, Element};
+
+use indicatif::{HumanDuration, MultiProgress, ProgressBar, ProgressStyle};
 
 const PATH: &str = "/portable/DrugBank.xml";
 const STATE_PATH: &str = "./state";
@@ -28,13 +30,17 @@ async fn main() -> Result<()> {
         EXIT.store(true, SeqCst);
         Result::<(), anyhow::Error>::Ok(())
     });
-    let mut rd = BufReader::new(File::open(PATH)?);
+    let fd = File::open(PATH)?;
+    let size = fd.metadata()?.size();
+    let mut rd = BufReader::new(fd);
+    
     let mut state = OpenOptions::new().write(true).read(true).open(STATE_PATH)?;
     let mut last_state = String::with_capacity(20);
     state.read_to_string(&mut last_state)?;
     let last_pos: u64 = last_state.parse()?;
     println!("start from {}", last_pos);
     rd.seek(SeekFrom::Start(last_pos))?; // skip this many bytes
+    let pb = ProgressBar::new(size);
     let mut p = xml::Parser::new();
     let mut e = xml::ElementBuilder::new();
     let mut found = 0;
@@ -60,7 +66,9 @@ async fn main() -> Result<()> {
                 found += 1;
                 let el = el?;
                 db.create::<Vec<Element>>("drugs").content(el).await?;
-                state.write_at((last_pos + pos.done_utf8).to_string().as_bytes(), 0)?;
+                let cpos = last_pos + pos.done_utf8;
+                pb.set_position(cpos);
+                state.write_at(cpos.to_string().as_bytes(), 0)?;
                 // state.flush()?;
             }
             if EXIT.load(SeqCst) {
