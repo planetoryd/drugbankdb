@@ -1,34 +1,76 @@
+#![feature(read_buf)]
+
 use anyhow::Result;
-use std::fs::File;
-use std::io::Read;
-use surrealdb;
-use xml;
+use serde::Deserialize;
+use std::collections::VecDeque;
+use std::fs::{File, OpenOptions};
+use std::io::{BufRead, BufReader, Read, Seek, SeekFrom, Write};
+use std::os::unix::fs::FileExt;
+use std::sync::atomic::AtomicBool;
+use std::sync::atomic::Ordering::SeqCst;
+use surrealdb::engine::remote;
+use surrealdb::{self, Surreal};
+use tokio::signal;
+use xml::{self, Element};
 
-// const PATH: &str = "/portable/DrugBank.xml";
-const PATH: &str = "./RustyXML/beh.xml";
+const PATH: &str = "/portable/DrugBank.xml";
+const STATE_PATH: &str = "./state";
+// const PATH: &str = "./RustyXML/beh.xml";
+const BUFSIZE: usize = 2000;
+const NUM: usize = 200;
+static EXIT: AtomicBool = AtomicBool::new(false);
 
-fn main() -> Result<()> {
-    let mut rd = File::open(PATH)?;
+#[tokio::main]
+async fn main() -> Result<()> {
+    tokio::spawn(async {
+        signal::ctrl_c().await?;
+        println!("Received exit signal");
+        EXIT.store(true, SeqCst);
+        Result::<(), anyhow::Error>::Ok(())
+    });
+    let mut rd = BufReader::new(File::open(PATH)?);
+    let mut state = OpenOptions::new().write(true).read(true).open(STATE_PATH)?;
+    let mut last_state = String::with_capacity(20);
+    state.read_to_string(&mut last_state)?;
+    let last_pos: u64 = last_state.parse()?;
+    println!("start from {}", last_pos);
+    rd.seek(SeekFrom::Start(last_pos))?; // skip this many bytes
     let mut p = xml::Parser::new();
     let mut e = xml::ElementBuilder::new();
     let mut found = 0;
-    let mut buf = [0; 2000];
-    rd.read(&mut buf)?;
-    let deco = String::from_utf8(buf.to_vec())?;
-    p.feed_str(&deco);
-    // dbg!(&deco);
-    for ev in p {
-        let x = e.handle_event(ev);
-        if let Some(el) = x {
-            let el = el?;
-            let jsn = serde_json::to_string_pretty(&el)?;
-            println!("{}", jsn);
-            found += 1;
-
-            if found > 10 {
+    let mut eof = false;
+    let db = Surreal::new::<remote::ws::Ws>("localhost:8000").await?;
+    db.wait_for(surrealdb::opt::WaitFor::Connection).await;
+    db.use_ns("drugs").use_db("drugs").await?;
+    'out: while !eof {
+        let mut buf = String::with_capacity(BUFSIZE);
+        while buf.len() < BUFSIZE {
+            if rd.read_line(&mut buf)? == 0 {
+                println!("eof");
+                eof = true;
                 break;
             }
         }
+
+        p.feed_str(&buf);
+        for ev in &mut p {
+            let (ev, pos) = ev?;
+            let x = e.handle_event(ev);
+            if let Some(el) = x {
+                found += 1;
+                let el = el?;
+                db.create::<Vec<Element>>("drugs").content(el).await?;
+                state.write_at((last_pos + pos.done_utf8).to_string().as_bytes(), 0)?;
+                // state.flush()?;
+            }
+            if EXIT.load(SeqCst) {
+                break 'out;
+            }
+        }
+        if found > NUM {
+            break;
+        }
     }
+
     Ok(())
 }

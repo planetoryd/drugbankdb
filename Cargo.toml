@@ -6,5 +6,7 @@ edition = "2021"
 [dependencies]
 RustyXML = { path = "./RustyXML" }
 anyhow = "1.0.83"
+serde = { version = "1.0.201", features = ["derive"] }
 serde_json = "1.0.116"
 surrealdb = "1.4.2"
+tokio = { version = "1.37.0", features = ["signal"] }
