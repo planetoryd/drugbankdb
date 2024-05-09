@@ -19,7 +19,6 @@ const PATH: &str = "/portable/DrugBank.xml";
 const STATE_PATH: &str = "./state";
 // const PATH: &str = "./RustyXML/beh.xml";
 const BUFSIZE: usize = 2000;
-const NUM: usize = 200;
 static EXIT: AtomicBool = AtomicBool::new(false);
 
 #[tokio::main]
@@ -74,9 +73,6 @@ async fn main() -> Result<()> {
             if EXIT.load(SeqCst) {
                 break 'out;
             }
-        }
-        if found > NUM {
-            break;
         }
     }
 
