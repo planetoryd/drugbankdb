@@ -16,5 +16,5 @@ deno jupyter --install
 
 TODO:
 
--[] Insert drug interaction as `record` graph edges.
--[] Convert types, `created` as date, `average-mass` as float
+- [ ] Insert drug interaction as `record` graph edges.
+- [ ] Convert types, `created` as date, `average-mass` as float
