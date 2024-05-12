@@ -4,3 +4,4 @@ state
 out
 /target
 rustc-*
+var
