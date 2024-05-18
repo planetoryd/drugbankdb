@@ -5,3 +5,4 @@ out
 /target
 rustc-*
 var
+p*.ts
